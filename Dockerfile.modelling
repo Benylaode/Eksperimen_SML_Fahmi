@@ -1,0 +1,9 @@
+FROM python:3.10
+
+WORKDIR /app/Membangun_model
+COPY . /app
+
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install mlflow prometheus_client pandas matplotlib scikit-learn joblib
+
+CMD ["python", "modelling.py"]

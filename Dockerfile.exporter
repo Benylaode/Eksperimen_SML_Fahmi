@@ -1,0 +1,8 @@
+FROM python:3.10
+
+WORKDIR /app
+COPY Monitoring_dan_Logging/3.prometheus_exporter.py /app/exporter.py
+
+RUN pip install prometheus_client
+
+CMD ["python", "exporter.py"]

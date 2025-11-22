@@ -1,0 +1,64 @@
+version: "3.9"
+
+services:
+  mlflow-server:
+    image: ghcr.io/mlflow/mlflow:latest
+    container_name: mlflow-server
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/mlflow/mlruns
+    command: >
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri sqlite:///mlflow.db
+      --default-artifact-root /mlflow/mlruns
+      --allowed-hosts *
+    networks:
+      - mentor-net
+
+
+  modelling:
+    build:
+      context: .
+      dockerfile: Dockerfile.modelling
+    container_name: modelling
+    depends_on:
+      - mlflow-server
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow-server:5000
+    networks:
+      - mentor-net
+
+  prometheus-exporter:
+    build:
+      context: .
+      dockerfile: Dockerfile.exporter
+    container_name: prometheus-exporter
+    ports:
+      - "9010:9010"
+    networks:
+      - mentor-net
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./Monitoring_dan_Logging:/etc/prometheus
+    networks:
+      - mentor-net
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - mentor-net
+
+networks:
+  mentor-net:
+    driver: bridge
