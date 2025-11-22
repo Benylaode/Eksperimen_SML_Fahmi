@@ -1,0 +1,33 @@
+artifact_path: file:///home/runner/work/Eksperimen_SML_Fahmi/Eksperimen_SML_Fahmi/Membangun_model/mlruns/436747108895650385/models/m-61de97c1477643d8b729a5089e672fa8/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.10.19
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.2
+is_signature_from_type_hint: false
+mlflow_version: 3.6.0
+model_id: m-61de97c1477643d8b729a5089e672fa8
+model_size_bytes: 456751
+model_uuid: m-61de97c1477643d8b729a5089e672fa8
+prompts: null
+run_id: 953aa3790fdd4131884695f7a6cab9e8
+signature:
+  inputs: '[{"type": "double", "name": "MedInc", "required": true}, {"type": "double",
+    "name": "HouseAge", "required": true}, {"type": "double", "name": "AveRooms",
+    "required": true}, {"type": "double", "name": "AveBedrms", "required": true},
+    {"type": "double", "name": "Population", "required": true}, {"type": "double",
+    "name": "AveOccup", "required": true}, {"type": "double", "name": "Latitude",
+    "required": true}, {"type": "double", "name": "Longitude", "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-11-22 16:20:55.807441'

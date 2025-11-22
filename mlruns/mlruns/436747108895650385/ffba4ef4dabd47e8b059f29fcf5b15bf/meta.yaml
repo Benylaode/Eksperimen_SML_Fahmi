@@ -1,0 +1,14 @@
+artifact_uri: file:///home/runner/work/Eksperimen_SML_Fahmi/Eksperimen_SML_Fahmi/Membangun_model/mlruns/436747108895650385/ffba4ef4dabd47e8b059f29fcf5b15bf/artifacts
+end_time: 1763828438843
+entry_point_name: ''
+experiment_id: '436747108895650385'
+lifecycle_stage: active
+run_id: ffba4ef4dabd47e8b059f29fcf5b15bf
+run_name: LinearRegression
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763828436466
+status: 3
+tags: []
+user_id: runner

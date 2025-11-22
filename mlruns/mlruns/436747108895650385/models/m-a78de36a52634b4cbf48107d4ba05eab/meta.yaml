@@ -1,0 +1,10 @@
+artifact_location: file:///home/runner/work/Eksperimen_SML_Fahmi/Eksperimen_SML_Fahmi/Membangun_model/mlruns/436747108895650385/models/m-a78de36a52634b4cbf48107d4ba05eab/artifacts
+creation_timestamp: 1763828447900
+experiment_id: '436747108895650385'
+last_updated_timestamp: 1763828449760
+model_id: m-a78de36a52634b4cbf48107d4ba05eab
+model_type: null
+name: model
+source_run_id: a5cd012d416242f7aeca08b68f49e368
+status: 2
+status_message: null

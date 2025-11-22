@@ -1,0 +1,14 @@
+artifact_uri: file:///home/runner/work/Eksperimen_SML_Fahmi/Eksperimen_SML_Fahmi/Membangun_model/mlruns/436747108895650385/953aa3790fdd4131884695f7a6cab9e8/artifacts
+end_time: 1763828457656
+entry_point_name: ''
+experiment_id: '436747108895650385'
+lifecycle_stage: active
+run_id: 953aa3790fdd4131884695f7a6cab9e8
+run_name: GradientBoosting
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763828455637
+status: 3
+tags: []
+user_id: runner

@@ -14,15 +14,13 @@ import mlflow.sklearn
 from mlflow.models.signature import infer_signature
 
 
-
 if os.getenv("GITHUB_ACTIONS") == "true":
     MLFLOW_TRACKING_URI = "file:./mlruns"
     print("🔧 Running in GitHub Actions → using local MLflow store:", MLFLOW_TRACKING_URI)
 else:
-    # Jika run lokal → pakai MLflow Server dari docker-compose
     MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://mlflow-server:5000")
     print("🏠 Running locally → using MLflow Server:", MLFLOW_TRACKING_URI)
-    
+
 EXPERIMENT_NAME = os.getenv("MLFLOW_EXPERIMENT", "california_housing_exp")
 
 DATA_DIR = "california_housing_data/namadataset_preprocessing"
@@ -57,6 +55,7 @@ models = {
     "GradientBoosting": GradientBoostingRegressor(n_estimators=100, max_depth=5, random_state=42)
 }
 
+
 def train_model(name, model):
     print(f"\n🚀 Training model: {name}")
     t0 = time.time()
@@ -72,6 +71,8 @@ def train_model(name, model):
 
     with mlflow.start_run(run_name=name):
         mlflow.log_param("model_name", name)
+
+
         mlflow.log_metric("mse", mse)
         mlflow.log_metric("mae", mae)
         mlflow.log_metric("r2", r2)
@@ -80,16 +81,39 @@ def train_model(name, model):
         signature = infer_signature(X_train, model.predict(X_train))
         mlflow.sklearn.log_model(model, "model", signature=signature)
 
+
+        plt.figure()
+        plt.scatter(y_test, pred)
+        plt.xlabel("Actual Values")
+        plt.ylabel("Predicted Values")
+        plt.title(f"{name} Prediction Plot")
+
+        plot_path = os.path.join(OUTPUT_DIR, f"{name}_plot.png")
+        plt.savefig(plot_path)
+        plt.close()
+
+        mlflow.log_artifact(plot_path)
+
     return {"model": name, "mse": mse, "mae": mae, "r2": r2}
+
+
 
 def main():
     results = []
     for name, model in models.items():
         results.append(train_model(name, model))
 
+    # Simpan benchmark
     results_df = pd.DataFrame(results)
-    results_df.to_csv(os.path.join(OUTPUT_DIR, "benchmark_results.csv"), index=False)
-    print("\n📊 Hasil training disimpan.")
+    benchmark_path = os.path.join(OUTPUT_DIR, "benchmark_results.csv")
+    results_df.to_csv(benchmark_path, index=False)
+
+    print("\n📊 Hasil training disimpan → benchmark_results.csv")
+
+    # Log benchmark sebagai artefak
+    with mlflow.start_run(run_name="benchmark_summary"):
+        mlflow.log_artifact(benchmark_path)
+
 
 if __name__ == "__main__":
     main()
