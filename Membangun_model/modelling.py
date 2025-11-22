@@ -15,7 +15,14 @@ from mlflow.models.signature import infer_signature
 
 
 
-MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://mlflow-server:5000")
+if os.getenv("GITHUB_ACTIONS") == "true":
+    MLFLOW_TRACKING_URI = "file:./mlruns"
+    print("🔧 Running in GitHub Actions → using local MLflow store:", MLFLOW_TRACKING_URI)
+else:
+    # Jika run lokal → pakai MLflow Server dari docker-compose
+    MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://mlflow-server:5000")
+    print("🏠 Running locally → using MLflow Server:", MLFLOW_TRACKING_URI)
+    
 EXPERIMENT_NAME = os.getenv("MLFLOW_EXPERIMENT", "california_housing_exp")
 
 DATA_DIR = "california_housing_data/namadataset_preprocessing"

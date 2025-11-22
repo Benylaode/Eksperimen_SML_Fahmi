@@ -8,16 +8,16 @@ services:
       - "5000:5000"
     volumes:
       - ./mlruns:/mlflow/mlruns
+      - ./mlflow.db:/mlflow/mlflow.db
     command: >
       mlflow server
       --host 0.0.0.0
       --port 5000
       --backend-store-uri sqlite:///mlflow.db
       --default-artifact-root /mlflow/mlruns
-      --allowed-hosts *
+      --gunicorn-opts "--forwarded-allow-ips='*'"
     networks:
       - mentor-net
-
 
   modelling:
     build:
@@ -47,7 +47,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./Monitoring_dan_Logging:/etc/prometheus
+      - ./Monitoring_dan_Logging/prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - mentor-net
 
