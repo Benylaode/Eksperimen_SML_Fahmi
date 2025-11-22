@@ -25,8 +25,9 @@ jobs:
           pip install -r Membangun_model/requirements.txt
 
       - name: Run Model Training
+        working-directory: ./Membangun_model
         run: |
-          python Membangun_model/modelling.py
+          python modelling.py
 
       - name: Upload training artifacts
         uses: actions/upload-artifact@v4
