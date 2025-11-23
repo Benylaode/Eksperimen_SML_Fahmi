@@ -13,8 +13,6 @@ import mlflow
 import mlflow.sklearn
 
 
-mlflow.sklearn.autolog()
-
 
 # Atur tracking URI
 if os.getenv("GITHUB_ACTIONS") == "true":
@@ -61,27 +59,30 @@ models = {
     "GradientBoosting": GradientBoostingRegressor(n_estimators=100, max_depth=5, random_state=42)
 }
 
+mlflow.sklearn.autolog()
+mlflow.sklearn.autolog(log_models=True, log_input_examples=True)
+
 
 def train_model(name, model):
     print(f"\n🚀 Training model: {name}")
-    t0 = time.time()
 
-    model.fit(X_train, y_train)
-    duration = time.time() - t0
-
-    pred = model.predict(X_test)
-
-    # Hitung metrik
-    mse = mean_squared_error(y_test, pred)
-    mae = mean_absolute_error(y_test, pred)
-    r2 = r2_score(y_test, pred)
-
-    # Mulai MLflow Run
     with mlflow.start_run(run_name=name):
-        # Autolog otomatis mencatat parameter, metrik, model, artifact, dll
         print(f"📌 Autolog aktif → logging otomatis untuk model {name}")
 
-        # Simpan plot prediksi sebagai artifact tambahan
+        t0 = time.time()
+
+        # FIT harus di dalam start_run()
+        model.fit(X_train, y_train)
+
+        duration = time.time() - t0
+        pred = model.predict(X_test)
+
+        # Hitung metrik
+        mse = mean_squared_error(y_test, pred)
+        mae = mean_absolute_error(y_test, pred)
+        r2 = r2_score(y_test, pred)
+
+        # Plot prediction
         plt.figure()
         plt.scatter(y_test, pred)
         plt.xlabel("Actual Values")
@@ -94,8 +95,7 @@ def train_model(name, model):
 
         mlflow.log_artifact(plot_path)
 
-    return {"model": name, "mse": mse, "mae": mae, "r2": r2}
-
+        return {"model": name, "mse": mse, "mae": mae, "r2": r2}
 
 def main():
     results = []
