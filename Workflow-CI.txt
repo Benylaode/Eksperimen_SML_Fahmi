@@ -1,1 +1,1 @@
-https://github.com/Benylaode/Eksperimen_SML_Fahmi.git
+https://github.com/Benylaode/Workflow-CI_Fahmi.git
