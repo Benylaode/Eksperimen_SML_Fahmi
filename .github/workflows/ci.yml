@@ -40,7 +40,7 @@ jobs:
       - name: Run Model Training
         run: |
           rm -rf ~/.mlflow/venvs/*
-          mlflow run Membangun_model -e modelling --experiment-name "training_project_fahmi" --no-conda
+          mlflow run Membangun_model -e modelling --experiment-name "training_project_fahmi"
 
 
       # 7. Upload artifacts hasil training ke GitHub Actions
