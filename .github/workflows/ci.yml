@@ -27,7 +27,7 @@ jobs:
       - name: Run Model Training
         working-directory: ./Membangun_model
         run: |
-          mlflow run . -e modelling
+          mlflow run . -e modelling --no-conda
 
       - name: Upload training artifacts
         uses: actions/upload-artifact@v4
