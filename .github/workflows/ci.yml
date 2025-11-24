@@ -11,30 +11,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Ambil kode dari repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2. Setup Python versi 3.10
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
+      # 3. Install dependencies dari requirements.txt
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r Membangun_model/requirements.txt
 
+      # 4. Buat folder output sementara agar MLflow bisa menyimpan hasil
       - name: Create output folder
         run: mkdir -p /tmp/model_benchmark_outputs/
 
+      # 5. Buat MLflow experiment jika belum ada
       - name: Create MLflow experiment if not exists
         run: |
           mlflow experiments create --experiment-name "training_project_fahmi" || echo "Experiment already exists"
 
+      # 6. Jalankan training model menggunakan MLflow
       - name: Run Model Training
         run: |
           mlflow run Membangun_model -e modelling --experiment-name "training_project_fahmi"
 
+      # 7. Upload artifacts hasil training ke GitHub Actions
       - name: Upload training artifacts
         uses: actions/upload-artifact@v4
         with:
