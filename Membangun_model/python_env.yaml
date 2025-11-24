@@ -1,4 +1,3 @@
-name: training_env
 channels:
   - defaults
 
