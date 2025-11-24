@@ -1,5 +1,0 @@
-name: training_project_fahmi
-
-entry_points:
-  modelling:
-    command: "python modelling.py"

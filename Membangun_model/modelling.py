@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import time
 import pandas as pd
@@ -12,13 +13,15 @@ import mlflow
 import mlflow.sklearn
 
 
+
 # Atur tracking URI
 if os.getenv("GITHUB_ACTIONS") == "true":
-    MLFLOW_TRACKING_URI = f"file:{os.path.join(os.getcwd(), 'mlruns')}"
+    MLFLOW_TRACKING_URI = "file:./mlruns"
     print("🔧 Running in GitHub Actions → using local MLflow store:", MLFLOW_TRACKING_URI)
 else:
     MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://mlflow-server:5000")
     print("🏠 Running locally → using MLflow Server:", MLFLOW_TRACKING_URI)
+
 
 EXPERIMENT_NAME = os.getenv("MLFLOW_EXPERIMENT", "california_housing_exp")
 
@@ -56,16 +59,19 @@ models = {
     "GradientBoosting": GradientBoostingRegressor(n_estimators=100, max_depth=5, random_state=42)
 }
 
+mlflow.sklearn.autolog()
+mlflow.sklearn.autolog(log_models=True, log_input_examples=True)
+
 
 def train_model(name, model):
     print(f"\n🚀 Training model: {name}")
 
     with mlflow.start_run(run_name=name):
-        print(f"📌 Logging manual → model {name}")
+        print(f"📌 Autolog aktif → logging otomatis untuk model {name}")
 
         t0 = time.time()
 
-        # Train
+        # FIT harus di dalam start_run()
         model.fit(X_train, y_train)
 
         duration = time.time() - t0
@@ -75,15 +81,6 @@ def train_model(name, model):
         mse = mean_squared_error(y_test, pred)
         mae = mean_absolute_error(y_test, pred)
         r2 = r2_score(y_test, pred)
-
-        # === Logging manual ===
-        mlflow.log_metric("mse", mse)
-        mlflow.log_metric("mae", mae)
-        mlflow.log_metric("r2", r2)
-        mlflow.log_metric("training_time_sec", duration)
-
-        # Log model
-        mlflow.sklearn.log_model(model, artifact_path="model")
 
         # Plot prediction
         plt.figure()
@@ -96,11 +93,9 @@ def train_model(name, model):
         plt.savefig(plot_path)
         plt.close()
 
-        # Log artifact (gambar)
         mlflow.log_artifact(plot_path)
 
         return {"model": name, "mse": mse, "mae": mae, "r2": r2}
-
 
 def main():
     results = []
