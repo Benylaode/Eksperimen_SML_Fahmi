@@ -24,6 +24,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r Membangun_model/requirements.txt
 
+      - name: Create output folder
+        run: mkdir -p /tmp/model_benchmark_outputs/
+
       - name: Create MLflow experiment if not exists
         run: |
           mlflow experiments create --experiment-name "training_project_fahmi" || echo "Experiment already exists"
@@ -31,9 +34,6 @@ jobs:
       - name: Run Model Training
         run: |
           mlflow run Membangun_model -e modelling --experiment-name "training_project_fahmi"
-
-      - name: Create output folder
-        run: mkdir -p /tmp/model_benchmark_outputs/
 
       - name: Upload training artifacts
         uses: actions/upload-artifact@v4
