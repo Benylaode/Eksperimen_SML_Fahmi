@@ -33,7 +33,7 @@ jobs:
 
       - name: Run Model Training
         run: |
-          mlflow run Membangun_model -e modelling --experiment-name "training_project_fahmi"
+          mlflow run Membangun_model -e modelling --experiment-name "training_project_fahmi" --env-manager=local
 
       - name: Upload training artifacts
         uses: actions/upload-artifact@v4
