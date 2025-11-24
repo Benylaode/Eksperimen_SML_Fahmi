@@ -14,8 +14,9 @@ import mlflow.sklearn
 
 # Atur tracking URI
 if os.getenv("GITHUB_ACTIONS") == "true":
-    MLFLOW_TRACKING_URI = "file:./mlruns"
-    print("🔧 Running in GitHub Actions → using local MLflow store:", MLFLOW_TRACKING_URI)
+    mlflow_tracking_uri = os.path.join(os.getcwd(), "mlruns")  # absolut path
+    mlflow.set_tracking_uri(f"file:{mlflow_tracking_uri}")
+    print("🔧 Running in GitHub Actions → using local MLflow store:", mlflow_tracking_uri)
 else:
     MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://mlflow-server:5000")
     print("🏠 Running locally → using MLflow Server:", MLFLOW_TRACKING_URI)
