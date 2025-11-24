@@ -1,7 +1,5 @@
 name: training_project_fahmi
 
-python_env: python_env.yaml
-
 entry_points:
   modelling:
     command: "python modelling.py"
