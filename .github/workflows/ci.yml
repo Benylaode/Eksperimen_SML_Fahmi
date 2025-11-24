@@ -39,7 +39,7 @@ jobs:
       # 6. Jalankan training model menggunakan MLflow
       - name: Run Model Training
         env:
-         MLFLOW_EXPERIMENT_NAME: training_project_fahmi
+          MLFLOW_EXPERIMENT_NAME: training_project_fahmi
         run: |
           mlflow run Membangun_model -e modelling --experiment-name "training_project_fahmi"
 
